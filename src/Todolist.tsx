@@ -3,6 +3,7 @@ import {FilterValuesType} from "./App";
 import './App.css';
 
 type TodolistPropsType = {
+    todolistId: string
     title: string
     tasks: Array<TaskType>
     removeTask: (taskId: string) => void
