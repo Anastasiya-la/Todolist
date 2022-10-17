@@ -40,15 +40,6 @@ function App() {
         setFilter(buttonName);
     }
 
-    let tasksForTodolist = tasks;
-
-    if (filter === 'active') {
-        tasksForTodolist = tasks.filter(t => !t.isDone);
-    }
-    if (filter === 'completed') {
-        tasksForTodolist = tasks.filter(t => t.isDone);
-    }
-
     const removeTask = (id: string) => {
         setTasks(tasks.filter((t) => t.id !== id));
     }
@@ -68,17 +59,31 @@ function App() {
 
     return (
         <div className="App">
-            {todolists.map(tl=> <Todolist
-                key={tl.id}
-                todolistId={tl.id}
-                title={tl.title}
-                tasks={tasksForTodolist}
-                removeTask={removeTask}
-                changeFilter={changeFilter}
-                addTask={addTask}
-                changeTaskStatus={changeStatus}
-                filter={tl.filter}
-            />)}
+            {todolists.map(tl => {
+
+                let tasksForTodolist = tasks;
+
+                if (tl.filter === 'active') {
+                    tasksForTodolist = tasks.filter(t => !t.isDone);
+                }
+                if (tl.filter === 'completed') {
+                    tasksForTodolist = tasks.filter(t => t.isDone);
+                }
+
+                return (
+                    <Todolist
+                        key={tl.id}
+                        todolistId={tl.id}
+                        title={tl.title}
+                        tasks={tasksForTodolist}
+                        removeTask={removeTask}
+                        changeFilter={changeFilter}
+                        addTask={addTask}
+                        changeTaskStatus={changeStatus}
+                        filter={tl.filter}
+                    />)
+            })
+            }
 
         </div>
     );
