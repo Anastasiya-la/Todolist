@@ -33,11 +33,14 @@ function App() {
         {id: v1(), title: 'GraphQL', isDone: false}
     ])
 
-    const [filter, setFilter] = useState<FilterValuesType>('all');
 
-
-    const changeFilter = (buttonName: FilterValuesType) => {
-        setFilter(buttonName);
+    const changeFilter = (filterValue: FilterValuesType, todolistId: string) => {
+        let todolist = todolists.find(tl => tl.id === todolistId);
+        if (todolist) {
+            todolist.filter = filterValue
+        }
+        ;
+        setTodolists([...todolists])
     }
 
     const removeTask = (id: string) => {
