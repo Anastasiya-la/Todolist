@@ -1,7 +1,6 @@
-import React, {useReducer, useState} from 'react';
+import React from 'react';
 import './App.css';
 import {TaskType, Todolist} from "./Todolist";
-import {v1} from "uuid";
 import AddItemForm from "./components/AddItemForm";
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@mui/material";
 import {Menu} from "@mui/icons-material";
@@ -9,10 +8,11 @@ import {
     addTodolistAC,
     changeTodolistFilterAC,
     changeTodolistTitleAC,
-    removeTodolistAC,
-    todolistsReducer
+    removeTodolistAC
 } from "./state/todolists-reducer";
-import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer} from "./state/tasks-reducer";
+import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./state/tasks-reducer";
+import {useDispatch, useSelector} from "react-redux";
+import {AppRootStateType} from "./state/store";
 
 export type FilterValuesType = 'all' | 'active' | 'completed';
 
@@ -27,63 +27,42 @@ export type TasksStateType = {
 }
 
 function AppWithRedux() {
-
-    let todolistID1 = v1()
-    let todolistID2 = v1()
-
-    let [todolists, dispatchToTodolists] = useReducer(todolistsReducer, [
-        {id: todolistID1, title: 'What to learn', filter: 'all'},
-        {id: todolistID2, title: 'What to buy', filter: 'all'},
-    ])
-
-    let [tasks, dispatchToTasks] = useReducer(tasksReducer, {
-        [todolistID1]: [
-            {id: v1(), title: 'HTML&CSS', isDone: true},
-            {id: v1(), title: 'JS', isDone: true},
-            {id: v1(), title: 'ReactJS', isDone: false},
-
-        ],
-        [todolistID2]: [
-            {id: v1(), title: 'Rest API', isDone: true},
-            {id: v1(), title: 'GraphQL', isDone: false},
-        ]
-    })
+    const todolists = useSelector<AppRootStateType, Array<TodolistType>>(state => state.todolists)
+    const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
+    const dispatch = useDispatch()
 
 
     const changeFilter = (filterValue: FilterValuesType, todolistId: string) => {
-        dispatchToTodolists(changeTodolistFilterAC(todolistId, filterValue))
+        dispatch(changeTodolistFilterAC(todolistId, filterValue))
     }
 
     const removeTask = (todolistID: string, taskId: string) => {
-        dispatchToTasks(removeTaskAC(taskId, todolistID))
+        dispatch(removeTaskAC(taskId, todolistID))
     }
 
     const addTask = (todolistID: string, title: string) => {
-        dispatchToTasks(addTaskAC(title, todolistID))
+        dispatch(addTaskAC(title, todolistID))
     }
 
     const changeStatus = (todolistID: string, taskId: string, isDone: boolean) => {
-        dispatchToTasks(changeTaskStatusAC(taskId, isDone, todolistID))
+        dispatch(changeTaskStatusAC(taskId, isDone, todolistID))
     }
 
     const removeTodolist = (todolistID: string) => {
-        let action = removeTodolistAC(todolistID)
-        dispatchToTodolists(action)
-        dispatchToTasks(action)
+        dispatch(removeTodolistAC(todolistID))
     }
 
     const addTodolist = (title: string) => {
-        let action = addTodolistAC(title)
-        dispatchToTodolists(action)
-        dispatchToTasks(action)
+        dispatch(addTodolistAC(title))
     }
 
     const updateTaskTitle = (todolistId: string, taskId: string, newTitle: string) => {
-        dispatchToTasks(changeTaskTitleAC(taskId, newTitle, todolistId))
+        dispatch(changeTaskTitleAC(taskId, newTitle, todolistId))
     }
 
     const updateTodolistTitle = (todolistId: string, newTitle: string) => {
-        dispatchToTodolists(changeTodolistTitleAC(todolistId, newTitle))
+        dispatch(changeTodolistTitleAC(todolistId,newTitle))
+
     }
 
     return (
@@ -116,7 +95,7 @@ function AppWithRedux() {
                         }
 
                         return (
-                            <Grid item>
+                            <Grid item key={tl.id}>
                                 <Paper sx={{p: '10px'}}>
                                     <Todolist
                                         key={tl.id}

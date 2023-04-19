@@ -3,7 +3,7 @@ import {FilterValuesType} from "./App";
 import './App.css';
 import AddItemForm from "./components/AddItemForm";
 import EditableSpan from "./components/EditableSpan";
-import {Button, Checkbox, Grid, IconButton, Paper} from "@mui/material";
+import {Button, Checkbox, IconButton} from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 
 type TodolistPropsType = {
