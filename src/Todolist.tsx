@@ -30,19 +30,18 @@ export const Todolist = memo((props: TodolistPropsType) => {
 
     console.log('Todolist called')
 
-    const onAllClickHandler = () => props.changeFilter('all', props.todolistId);
+    const onAllClickHandler = useCallback(() => props.changeFilter('all', props.todolistId), [props.changeFilter, props.todolistId]);
+
+    const onActiveClickHandler = useCallback(() => props.changeFilter('active', props.todolistId), [props.changeFilter, props.todolistId]);
 
 
-    const onActiveClickHandler = () => props.changeFilter('active', props.todolistId);
-
-
-    const onCompletedClickHandler = () => props.changeFilter('completed', props.todolistId);
+    const onCompletedClickHandler = useCallback(() => props.changeFilter('completed', props.todolistId), [props.changeFilter, props.todolistId]);
 
     const onClickDelTodolistHandler = () => props.removeTodolist(props.todolistId)
 
     const addTask = useCallback((title: string) => {
         props.addTask(props.todolistId, title);
-    }, [])
+    }, [props.addTask, props.todolistId])
 
     const updateTodolistTitle = (newTitle: string) => {
         props.updateTodolistTitle(props.todolistId, newTitle)
