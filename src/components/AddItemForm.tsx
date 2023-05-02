@@ -9,12 +9,15 @@ type AddItemFormPropsType = {
 
 
 const AddItemForm = (props: AddItemFormPropsType) => {
+    console.log('Add Item Form')
     const [title, setTitle] = useState('');
     const [error, setError] = useState<string | null>(null)
 
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setTitle(e.currentTarget.value);
-        setError(null)
+        if (error !== null) {
+            setError(null)
+        }
     }
 
     const onKeyDownHandler = (e: KeyboardEvent<HTMLInputElement>) => {

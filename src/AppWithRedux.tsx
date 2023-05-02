@@ -61,7 +61,7 @@ function AppWithRedux() {
     }
 
     const updateTodolistTitle = (todolistId: string, newTitle: string) => {
-        dispatch(changeTodolistTitleAC(todolistId,newTitle))
+        dispatch(changeTodolistTitleAC(todolistId, newTitle))
 
     }
 
