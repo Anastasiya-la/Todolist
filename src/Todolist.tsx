@@ -42,10 +42,19 @@ export const Todolist = memo((props: TodolistPropsType) => {
 
     const addTask = useCallback((title: string) => {
         props.addTask(props.todolistId, title);
-    },[])
+    }, [])
 
     const updateTodolistTitle = (newTitle: string) => {
         props.updateTodolistTitle(props.todolistId, newTitle)
+    }
+
+    let tasksForTodolist = props.tasks;
+
+    if (props.filter === 'active') {
+        tasksForTodolist = tasksForTodolist.filter(t => !t.isDone);
+    }
+    if (props.filter === 'completed') {
+        tasksForTodolist = tasksForTodolist.filter(t => t.isDone);
     }
 
     return (
