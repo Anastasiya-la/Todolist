@@ -5,6 +5,7 @@ import AddItemForm from "./components/AddItemForm";
 import EditableSpan from "./components/EditableSpan";
 import {Button, Checkbox, IconButton} from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
+import Task from "./Task";
 
 type TodolistPropsType = {
     todolistId: string
@@ -43,9 +44,9 @@ export const Todolist = memo((props: TodolistPropsType) => {
         props.addTask(props.todolistId, title);
     }, [props.addTask, props.todolistId])
 
-    const updateTodolistTitle = (newTitle: string) => {
+    const updateTodolistTitle = useCallback((newTitle: string) => {
         props.updateTodolistTitle(props.todolistId, newTitle)
-    }
+    }, [props.updateTodolistTitle, props.todolistId])
 
     let tasksForTodolist = props.tasks;
 
@@ -68,27 +69,8 @@ export const Todolist = memo((props: TodolistPropsType) => {
             <AddItemForm addItem={addTask}/>
             <div>
                 {props.tasks.map((t) => {
-                    const onClickHandler = () => {
-                        props.removeTask(props.todolistId, t.id);
-                    }
-
-                    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-                        props.changeTaskStatus(props.todolistId, t.id, e.currentTarget.checked);
-                    }
-
-                    const updateTitle = (newTitle: string) => {
-                        props.updateTaskTitle(props.todolistId, t.id, newTitle)
-                    }
-
-                    return <div key={t.id} className={t.isDone ? 'is-done' : ''}>
-                        <Checkbox checked={t.isDone} onChange={onChangeHandler} color={'secondary'}/>
-                        <EditableSpan oldTitle={t.title} onChange={updateTitle}/>
-                        <IconButton
-                            onClick={onClickHandler}>
-                            <DeleteIcon/>
-                        </IconButton>
-                    </div>
-
+                    return (<Task removeTask={props.removeTask} changeTaskStatus={props.changeTaskStatus} task={t}
+                                  updateTaskTitle={props.updateTaskTitle} todolistId={props.todolistId} key = {t.id}/>)
 
                 })}
             </div>
