@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useCallback} from 'react';
+import React, {ChangeEvent, memo, useCallback} from 'react';
 import {FilterValuesType} from "./App";
 import './App.css';
 import AddItemForm from "./components/AddItemForm";
@@ -26,8 +26,9 @@ export type TaskType = {
     isDone: boolean
 }
 
-export const Todolist = (props: TodolistPropsType) => {
+export const Todolist = memo((props: TodolistPropsType) => {
 
+    console.log('Todolist called')
 
     const onAllClickHandler = () => props.changeFilter('all', props.todolistId);
 
@@ -103,4 +104,4 @@ export const Todolist = (props: TodolistPropsType) => {
             </div>
         </div>
     );
-}
+})
