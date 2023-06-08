@@ -31,6 +31,7 @@ export const Todolist = memo((props: TodolistPropsType) => {
 
     console.log('Todolist called')
 
+
     const onAllClickHandler = useCallback(() => props.changeFilter('all', props.todolistId), [props.changeFilter, props.todolistId]);
 
     const onActiveClickHandler = useCallback(() => props.changeFilter('active', props.todolistId), [props.changeFilter, props.todolistId]);
@@ -68,9 +69,9 @@ export const Todolist = memo((props: TodolistPropsType) => {
             </h3>
             <AddItemForm addItem={addTask}/>
             <div>
-                {props.tasks.map((t) => {
+                {tasksForTodolist.map((t) => {
                     return (<Task removeTask={props.removeTask} changeTaskStatus={props.changeTaskStatus} task={t}
-                                  updateTaskTitle={props.updateTaskTitle} todolistId={props.todolistId} key = {t.id}/>)
+                                  updateTaskTitle={props.updateTaskTitle} todolistId={props.todolistId} key={t.id}/>)
 
                 })}
             </div>
