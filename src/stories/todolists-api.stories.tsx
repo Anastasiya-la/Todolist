@@ -4,11 +4,19 @@ import axios from "axios";
 export default {
     title: 'API'
 }
+const settings = {
+    withCredentials: true
+}
 
 export const GetTodolists = () => {
     const [state, setState] = useState<any>(null)
     useEffect(() => {
-    /*    axios.get('https://social-network.samuraijs.com/api/1.1/todo-lists')*/
+        console.log('render1')
+        axios.get('https://social-network.samuraijs.com/api/1.1/todo-lists', settings)
+            .then((res) => {
+                console.log('Render2')
+                setState(res.data)
+            })
         // здесь мы будем делать запрос и ответ закидывать в стейт.
         // который в виде строки будем отображать в div-ке
 
