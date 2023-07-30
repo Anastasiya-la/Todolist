@@ -11,7 +11,7 @@ const instance = axios.create({
 
 export const todolistAPI = {
     get() {
-        return instance.get('todo-lists')
+        return instance.get<TodolistType[]>('todo-lists')
     },
     addTodolist(title: string) {
         return instance.post('todo-lists', {title: title})
@@ -23,3 +23,11 @@ export const todolistAPI = {
         return instance.put(`todo-lists/${todolistId}`, {title: title})
     }
 }
+
+type TodolistType = {
+    id: string
+    addedDate: string
+    order: number
+    title: string
+}
+
