@@ -1,11 +1,12 @@
-import React, {ChangeEvent, memo, useCallback} from 'react';
-import {FilterValuesType} from "./App";
+import React, {memo, useCallback} from 'react';
 import './App.css';
 import AddItemForm from "./components/AddItemForm";
 import EditableSpan from "./components/EditableSpan";
-import {Button, Checkbox, IconButton} from "@mui/material";
+import {Button, IconButton} from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import Task from "./Task";
+import {TaskStatuses, TaskType} from "./api/todolist-api";
+import {FilterValuesType} from "./state/todolists-reducer";
 
 type TodolistPropsType = {
     todolistId: string
@@ -14,18 +15,18 @@ type TodolistPropsType = {
     removeTask: (todolistID: string, taskId: string) => void
     changeFilter: (buttonName: FilterValuesType, todolistId: string) => void
     addTask: (todolistID: string, title: string) => void
-    changeTaskStatus: (todolistID: string, taskId: string, isDone: boolean) => void
+    changeTaskStatus: (todolistID: string, taskId: string, status: TaskStatuses) => void
     removeTodolist: (todolistID: string) => void
     filter: FilterValuesType
     updateTaskTitle: (todolistId: string, taskId: string, newTitle: string) => void
     updateTodolistTitle: (todolistId: string, newTitle: string) => void
 }
 
-export type TaskType = {
+/*export type TaskType = {
     id: string
     title: string
-    isDone: boolean
-}
+   status: TaskStatuses
+}*/
 
 export const Todolist = memo((props: TodolistPropsType) => {
 
@@ -52,10 +53,10 @@ export const Todolist = memo((props: TodolistPropsType) => {
     let tasksForTodolist = props.tasks;
 
     if (props.filter === 'active') {
-        tasksForTodolist = tasksForTodolist.filter(t => !t.isDone);
+        tasksForTodolist = tasksForTodolist.filter(t => t.status === TaskStatuses.New);
     }
     if (props.filter === 'completed') {
-        tasksForTodolist = tasksForTodolist.filter(t => t.isDone);
+        tasksForTodolist = tasksForTodolist.filter(t => t.status === TaskStatuses.Completed);
     }
 
     return (
