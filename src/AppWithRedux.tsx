@@ -26,8 +26,8 @@ function AppWithRedux() {
     const dispatch = useAppDispatch() // типизированный диспатч
 
     useEffect(() => {
-     dispatch(fetchTodolistsThunk)
-    })
+        dispatch(fetchTodolistsThunk)
+    },[])
 
     const changeFilter = useCallback((filterValue: FilterValuesType, todolistId: string) => {
         dispatch(changeTodolistFilterAC(todolistId, filterValue))
