@@ -32,7 +32,7 @@ export const todolistAPI = {
         return instance.delete<ResponseType>(`todo-lists/${todolistId}/tasks/${taskId}`)
     },
     updateTask(todolistId: string, taskId: string, payload: UpdateTaskType) {
-        return instance.put<ResponseType>(`todo-lists/${todolistId}/tasks/${taskId}`, {title: payload.title})
+        return instance.put<ResponseType>(`todo-lists/${todolistId}/tasks/${taskId}`, payload)
     }
 }
 
