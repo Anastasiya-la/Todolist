@@ -20,7 +20,7 @@ export type TasksStateType = {
     [key: string]: Array<TaskType>
 }
 
-function AppWithReducers() {
+/*function AppWithReducers() {
 
     let todolistID1 = v1()
     let todolistID2 = v1()
@@ -193,6 +193,6 @@ function AppWithReducers() {
 
         </div>
     );
-}
+}*/
 
-export default AppWithReducers;
+/*export default AppWithReducers;*/
