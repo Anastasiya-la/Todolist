@@ -86,7 +86,7 @@ export const addTaskAC = (task: TaskType) => {
         task
     } as const
 }
-export const  changeTaskStatusAC = (taskId: string, status: TaskStatuses, todolistId: string) => {
+export const changeTaskStatusAC = (taskId: string, status: TaskStatuses, todolistId: string) => {
     return {
         type: 'CHANGE-TASK-STATUS',
         taskId,
@@ -145,4 +145,24 @@ export const updateTaskStatusTC = (todolistID: string, taskId: string, status: T
         })
 
     }
+}
+
+export const changeTaskTitleTC = (taskId: string, newTitle: string, todolistId: string) => (dispatch: Dispatch, getState: () => AppRootStateType) => {
+    const allTasksFromState = getState().tasks
+    const task = allTasksFromState[todolistId].find(t => t.id === taskId)
+    if (!task) {
+        console.warn('task not found in the state')
+        return;
+    }
+    let model = {
+        description: task.description,
+        title: newTitle,
+        status: task.status,
+        priority: task.priority,
+        startDate: task.startDate,
+        deadline: task.deadline
+    }
+    todolistAPI.updateTask(todolistId, taskId, model).then((res) => {
+        dispatch(changeTaskTitleAC(taskId, newTitle, todolistId))
+    })
 }
