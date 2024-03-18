@@ -5,10 +5,10 @@ import AddItemForm from "./components/AddItemForm";
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@mui/material";
 import {Menu} from "@mui/icons-material";
 import {
-    addTodolistAC,
+    addTodolistTC,
     changeTodolistFilterAC,
     changeTodolistTitleAC, fetchTodolistsTC, FilterValuesType,
-    removeTodolistAC, TodolistDomainType
+    removeTodolistTC, TodolistDomainType
 } from "./state/todolists-reducer";
 import {
     addTaskTC,
@@ -55,12 +55,12 @@ function AppWithRedux() {
 
 
     const removeTodolist = useCallback((todolistID: string) => {
-        dispatch(removeTodolistAC(todolistID))
+        dispatch(removeTodolistTC(todolistID))
     }, [])
 
 
     const addTodolist = useCallback((title: string) => {
-        dispatch(addTodolistAC(title))
+        dispatch(addTodolistTC(title))
     }, [])
 
     const updateTaskTitle = useCallback((todolistId: string, taskId: string, newTitle: string) => {

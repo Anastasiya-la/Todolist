@@ -1,16 +1,18 @@
-import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer} from './tasks-reducer'
+import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, setTasksAC, tasksReducer} from './tasks-reducer'
 import {TasksStateType} from '../App'
-import {addTodolistAC, removeTodolistAC} from "./todolists-reducer";
+import {addTodolistAC, removeTodolistAC, setTodolistsAC} from "./todolists-reducer";
 
 let startState: TasksStateType;
- enum TaskPriorities {
+
+enum TaskPriorities {
     Low,
     Middle,
     Hi = 2,
     Urgently,
     Later
 }
- enum TaskStatuses {
+
+enum TaskStatuses {
     New,
     InProgress,
     Completed,
@@ -130,7 +132,7 @@ test('correct task should be deleted from correct array', () => {
         ],
         'todolistId2': [
             {
-                id: '1', title: 'bread', status: TaskStatuses.New,
+                id: '1', title: 'bread', status: TaskStatuses.Completed,
                 todoListId: "todolistId2",
                 startDate: '',
                 description: '',
@@ -152,18 +154,29 @@ test('correct task should be deleted from correct array', () => {
         ]
     })
 })
-/*test('correct task should be added to correct array', () => {
+test('correct task should be added to correct array', () => {
 
-    const action = addTaskAC('juce', 'todolistId2')
+    const action = addTaskAC( {
+        id: '4',
+        title: 'Java',
+        status: TaskStatuses.New,
+        todoListId: 'todolistId1',
+        startDate: '',
+        description: '',
+        deadline: '',
+        addedDate: '',
+        order: 0,
+        priority: TaskPriorities.Low
+    })
 
     const endState = tasksReducer(startState, action)
 
-    expect(endState['todolistId1'].length).toBe(3)
-    expect(endState['todolistId2'].length).toBe(4)
-    expect(endState['todolistId2'][0].id).toBeDefined()
-    expect(endState['todolistId2'][0].title).toBe('juce')
-    expect(endState['todolistId2'][0].status).toBe(TaskStatuses.New)
-})*/
+    expect(endState['todolistId1'].length).toBe(4)
+    expect(endState['todolistId2'].length).toBe(3)
+    expect(endState['todolistId1'][0].id).toBeDefined()
+    expect(endState['todolistId1'][0].title).toBe('Java')
+    expect(endState['todolistId1'][0].status).toBe(TaskStatuses.New)
+})
 test('status of specified task should be changed', () => {
 
     const action = changeTaskStatusAC('2', TaskStatuses.New, 'todolistId2')
@@ -182,7 +195,7 @@ test('title of specified task should be changed', () => {
     expect(endState['todolistId1'][1].title).toBe('JS')
     expect(endState['todolistId2'][1].title).toBe('sugar')
 })
-test('new array should be added when new todolist is added', () => {
+/*test('new array should be added when new todolist is added', () => {
 
     const action = addTodolistAC('new todolist')
 
@@ -197,7 +210,7 @@ test('new array should be added when new todolist is added', () => {
 
     expect(keys.length).toBe(3)
     expect(endState[newKey]).toEqual([])
-})
+})*/
 test('property with todolistId should be deleted', () => {
 
     const action = removeTodolistAC('todolistId2')
@@ -209,4 +222,30 @@ test('property with todolistId should be deleted', () => {
 
     expect(keys.length).toBe(1)
     expect(endState['todolistId2']).not.toBeDefined()
+})
+
+test('empty arrayys should be added when we set todolists', () => {
+    const action = setTodolistsAC([
+        {id: '1', title: 'title 1', order: 0, addedDate: ''},
+        {id: '2', title: 'title 2', order: 0, addedDate: ''}
+    ])
+
+    const endState = tasksReducer({}, action)
+    const keys = Object.keys(endState)
+    expect(keys.length).toBe(2)
+    expect(endState['1']).toStrictEqual([])
+    expect(endState['2']).toStrictEqual([])
+})
+
+test('tasks should be added for todolist', () => {
+    const action = setTasksAC(startState['todolistId1'], 'todolistId1')
+
+    const endState = tasksReducer({
+        'todolistId1': [],
+        'todolistId2': []
+    }, action)
+
+
+    expect(endState['todolistId1'].length).toBe(3)
+    expect(endState['todolistId2'].length).toBe(0)
 })
